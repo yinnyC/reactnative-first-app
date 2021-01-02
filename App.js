@@ -8,6 +8,9 @@ export default function App() {
 	const [courseGoals, setCourseGoals] = useState([]);
 	const [isAddMode, setIsAddMode] = useState(false);
 	const addGoalHangler = (goalTitle) => {
+		if (goalTitle.length === 0) {
+			return;
+		}
 		setCourseGoals((currentGoals) => [
 			...currentGoals,
 			{ id: Math.random().toString(), value: goalTitle },
@@ -19,11 +22,17 @@ export default function App() {
 			return currentGoals.filter((goal) => goal.id !== goalId);
 		});
 	};
-
+	const cancelGoalAdditionHandler = () => {
+		setIsAddMode(false);
+	};
 	return (
 		<View style={styles.screen}>
 			<Button title="Add New Goal " onPress={() => setIsAddMode(true)} />
-			<GoalInput visible={isAddMode} onAddGoal={addGoalHangler} />
+			<GoalInput
+				visible={isAddMode}
+				onAddGoal={addGoalHangler}
+				onCancel={cancelGoalAdditionHandler}
+			/>
 			<FlatList
 				keyExtractor={(item, index) => item.id}
 				data={courseGoals}
